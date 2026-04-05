@@ -1,0 +1,43 @@
+# Domain randomization parameter ranges
+# Each parameter has: enabled (bool), low (float), high (float)
+# Multiplicative ranges are relative to nominal values
+
+body_mass:
+  enabled: true
+  low: 0.8
+  high: 1.2
+
+ground_friction:
+  enabled: true
+  low: 0.4
+  high: 1.5
+
+actuator_delay_steps:
+  enabled: true
+  low: 0
+  high: 4
+
+joint_damping:
+  enabled: true
+  low: 0.7
+  high: 1.3
+
+obs_noise_std:
+  enabled: true
+  low: 0.0
+  high: 0.02
+
+gravity:
+  enabled: true
+  low: -10.3
+  high: -9.5
+
+actuator_gain:
+  enabled: true
+  low: 0.85
+  high: 1.15
+
+terrain_roughness:
+  enabled: true
+  low: 0.0
+  high: 0.03

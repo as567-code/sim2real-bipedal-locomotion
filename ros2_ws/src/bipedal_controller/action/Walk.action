@@ -1,0 +1,13 @@
+# Goal: commanded walking parameters
+float64 target_velocity
+float64 duration
+---
+# Result: outcome of the walk command
+bool success
+float64 distance_walked
+float64 average_velocity
+---
+# Feedback: real-time status during walking
+float64 current_velocity
+float64 phase
+float64 elapsed_time

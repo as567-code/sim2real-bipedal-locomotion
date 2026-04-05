@@ -1,0 +1,39 @@
+# PPO training hyperparameters
+ppo:
+  lr: 3.0e-4
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_epsilon: 0.2
+  value_clip: 0.2
+  entropy_coef: 0.005
+  entropy_coef_final: 0.001
+  value_coef: 0.5
+  max_grad_norm: 0.5
+  epochs_per_rollout: 5
+  minibatch_size: 4096
+  target_kl: 0.02
+  lr_schedule: "linear"
+  num_iterations: 12000
+
+# Vectorized environment
+num_envs: 64
+rollout_length: 256
+
+# Network architecture
+policy:
+  hidden_dims: [256, 256, 256]
+  init_log_std: -0.5
+
+# Checkpointing and evaluation
+checkpoint_interval: 100
+eval_interval: 200
+eval_episodes: 10
+log_interval: 10
+
+# Paths
+checkpoint_dir: "checkpoints"
+log_dir: "runs"
+
+# Reproducibility
+seed: 42
+device: "auto"

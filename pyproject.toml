@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sim2real-biped"
+version = "0.1.0"
+description = "Sim2Real bipedal locomotion policy training with PPO, MuJoCo, and ROS2 deployment"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "mujoco>=3.0",
+    "gymnasium>=0.29",
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+    "tensorboard>=2.14",
+    "onnx>=1.15",
+    "onnxruntime>=1.16",
+    "tqdm>=4.66",
+    "matplotlib>=3.8",
+]
+
+[project.scripts]
+sim2real-train = "scripts.train:main"
+sim2real-eval = "scripts.evaluate:main"
+sim2real-export = "scripts.export_onnx:main"
+
+[tool.setuptools.packages.find]
+include = ["sim2real*", "scripts*"]

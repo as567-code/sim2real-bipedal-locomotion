@@ -1,0 +1,117 @@
+<mujoco model="biped">
+  <compiler angle="radian" autolimits="true"/>
+
+  <option timestep="0.02" integrator="implicitfast" gravity="0 0 -9.81">
+    <flag contact="enable"/>
+  </option>
+
+  <default>
+    <joint damping="1.5" armature="0.01" limited="true"/>
+    <geom condim="3" friction="0.8 0.005 0.0001" rgba="0.7 0.5 0.3 1"/>
+    <motor ctrllimited="true" ctrlrange="-1 1"/>
+  </default>
+
+  <asset>
+    <texture type="2d" name="grid" builtin="checker" width="512" height="512"
+             rgb1="0.2 0.3 0.4" rgb2="0.3 0.4 0.5"/>
+    <material name="grid_mat" texture="grid" texrepeat="8 8" reflectance="0.2"/>
+    <texture type="skybox" name="sky" builtin="gradient" width="512" height="512"
+             rgb1="0.4 0.6 0.8" rgb2="0.9 0.9 1.0"/>
+    <hfield name="terrain" nrow="100" ncol="100" size="5 5 0.03 0.001"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 6" dir="0 0 -1" diffuse="1 1 1" specular="0.3 0.3 0.3"/>
+    <geom name="floor" type="plane" size="20 20 0.1" material="grid_mat" rgba="0.5 0.5 0.5 1"/>
+    <geom name="hfield_floor" type="hfield" hfield="terrain" pos="0 0 0" rgba="0.5 0.55 0.5 0" contype="0" conaffinity="0"/>
+
+    <!-- ==================== TORSO ==================== -->
+    <body name="torso" pos="0 0 0.85">
+      <freejoint name="root"/>
+      <geom name="torso_geom" type="box" size="0.1 0.05 0.2" mass="8.0"
+            rgba="0.2 0.4 0.7 1"/>
+      <site name="imu" pos="0 0 0" type="box" size="0.01 0.01 0.01" rgba="1 0 0 0.5"/>
+
+      <!-- ==================== LEFT LEG ==================== -->
+      <body name="left_thigh" pos="0 0.05 -0.2">
+        <joint name="left_hip_flexion" axis="0 1 0" range="-1.2 0.8" ref="0"/>
+        <joint name="left_hip_abduction" axis="1 0 0" range="-0.5 0.5" ref="0"/>
+        <geom name="left_thigh_geom" type="capsule" fromto="0 0 0 0 0 -0.3"
+              size="0.04" mass="2.0" rgba="0.3 0.5 0.8 1"/>
+
+        <body name="left_shin" pos="0 0 -0.3">
+          <joint name="left_knee" axis="0 1 0" range="-1.5 -0.05" ref="-0.4"/>
+          <geom name="left_shin_geom" type="capsule" fromto="0 0 0 0 0 -0.25"
+                size="0.035" mass="1.2" rgba="0.3 0.5 0.8 1"/>
+
+          <body name="left_foot" pos="0 0 -0.25">
+            <joint name="left_ankle" axis="0 1 0" range="-0.6 0.6" ref="0"/>
+            <geom name="left_foot_geom" type="box" size="0.08 0.04 0.015"
+                  pos="0.02 0 -0.015" mass="0.4" rgba="0.4 0.6 0.9 1"/>
+            <site name="left_foot_contact" pos="0.02 0 -0.03" type="sphere" size="0.01"
+                  rgba="0 1 0 0.5"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- ==================== RIGHT LEG ==================== -->
+      <body name="right_thigh" pos="0 -0.05 -0.2">
+        <joint name="right_hip_flexion" axis="0 1 0" range="-1.2 0.8" ref="0"/>
+        <joint name="right_hip_abduction" axis="1 0 0" range="-0.5 0.5" ref="0"/>
+        <geom name="right_thigh_geom" type="capsule" fromto="0 0 0 0 0 -0.3"
+              size="0.04" mass="2.0" rgba="0.8 0.3 0.3 1"/>
+
+        <body name="right_shin" pos="0 0 -0.3">
+          <joint name="right_knee" axis="0 1 0" range="-1.5 -0.05" ref="-0.4"/>
+          <geom name="right_shin_geom" type="capsule" fromto="0 0 0 0 0 -0.25"
+                size="0.035" mass="1.2" rgba="0.8 0.3 0.3 1"/>
+
+          <body name="right_foot" pos="0 0 -0.25">
+            <joint name="right_ankle" axis="0 1 0" range="-0.6 0.6" ref="0"/>
+            <geom name="right_foot_geom" type="box" size="0.08 0.04 0.015"
+                  pos="0.02 0 -0.015" mass="0.4" rgba="0.9 0.4 0.4 1"/>
+            <site name="right_foot_contact" pos="0.02 0 -0.03" type="sphere" size="0.01"
+                  rgba="0 1 0 0.5"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="left_hip_flexion_motor"    joint="left_hip_flexion"    gear="80" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_hip_abduction_motor"  joint="left_hip_abduction"  gear="60" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_knee_motor"           joint="left_knee"           gear="80" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="left_ankle_motor"          joint="left_ankle"          gear="40" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_hip_flexion_motor"   joint="right_hip_flexion"   gear="80" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_hip_abduction_motor" joint="right_hip_abduction" gear="60" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_knee_motor"          joint="right_knee"          gear="80" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="right_ankle_motor"         joint="right_ankle"         gear="40" ctrllimited="true" ctrlrange="-1 1"/>
+  </actuator>
+
+  <sensor>
+    <jointpos name="jpos_left_hip_flex"  joint="left_hip_flexion"/>
+    <jointpos name="jpos_left_hip_abd"   joint="left_hip_abduction"/>
+    <jointpos name="jpos_left_knee"      joint="left_knee"/>
+    <jointpos name="jpos_left_ankle"     joint="left_ankle"/>
+    <jointpos name="jpos_right_hip_flex" joint="right_hip_flexion"/>
+    <jointpos name="jpos_right_hip_abd"  joint="right_hip_abduction"/>
+    <jointpos name="jpos_right_knee"     joint="right_knee"/>
+    <jointpos name="jpos_right_ankle"    joint="right_ankle"/>
+
+    <jointvel name="jvel_left_hip_flex"  joint="left_hip_flexion"/>
+    <jointvel name="jvel_left_hip_abd"   joint="left_hip_abduction"/>
+    <jointvel name="jvel_left_knee"      joint="left_knee"/>
+    <jointvel name="jvel_left_ankle"     joint="left_ankle"/>
+    <jointvel name="jvel_right_hip_flex" joint="right_hip_flexion"/>
+    <jointvel name="jvel_right_hip_abd"  joint="right_hip_abduction"/>
+    <jointvel name="jvel_right_knee"     joint="right_knee"/>
+    <jointvel name="jvel_right_ankle"    joint="right_ankle"/>
+
+    <gyro    name="torso_gyro"  site="imu"/>
+    <accelerometer name="torso_accel" site="imu"/>
+
+    <touch name="left_foot_touch"  site="left_foot_contact"/>
+    <touch name="right_foot_touch" site="right_foot_contact"/>
+  </sensor>
+</mujoco>
