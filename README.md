@@ -11,9 +11,9 @@ Custom **PPO** · **MuJoCo** · **Domain randomization** · **ONNX** · **ROS&nb
 [![MuJoCo](https://img.shields.io/badge/MuJoCo-3.x-00A86B?style=flat-square)](https://mujoco.org/)
 [![ROS 2](https://img.shields.io/badge/ROS%202-Humble-22314E?style=flat-square&logo=ros&logoColor=white)](https://docs.ros.org/en/humble/)
 [![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?style=flat-square)](tests/)
-![License](https://img.shields.io/badge/license-MIT-5c5c5c?style=flat-square)
+[![License](https://img.shields.io/badge/license-MIT-5c5c5c?style=flat-square)](LICENSE)
 
-[Features](#-highlights) · [Quick start](#-quick-start) · [Pipeline](#-training-pipeline) · [ROS 2](#-ros-2-deployment) · [Layout](#-repository-layout)
+[Highlights](#highlights) · [Quick start](#quick-start) · [Pipeline](#training-pipeline) · [ROS 2](#ros-2-deployment) · [Layout](#repository-layout)
 
 </div>
 
