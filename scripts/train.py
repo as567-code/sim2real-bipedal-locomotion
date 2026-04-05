@@ -177,9 +177,18 @@ def main():
 
     start_iter = 0
     if args.resume:
-        start_iter = load_checkpoint(args.resume, policy, obs_normalizer, trainer.optimizer, device)
-        trainer.iteration = start_iter
-        print(f"Resumed from iteration {start_iter}")
+        # Checkpoint stores the train-loop index that just finished. train_on_rollout
+        # increments trainer.iteration each step, so after completing loop iter K,
+        # trainer.iteration == K + 1. Resume at loop K+1 with matching schedule state.
+        finished_iter = load_checkpoint(
+            args.resume, policy, obs_normalizer, trainer.optimizer, device
+        )
+        start_iter = finished_iter + 1
+        trainer.iteration = finished_iter + 1
+        print(
+            f"Resumed after completing iteration {finished_iter}; "
+            f"continuing from iteration {start_iter}"
+        )
 
     buffer = RolloutBuffer(
         num_envs=cfg.num_envs,
