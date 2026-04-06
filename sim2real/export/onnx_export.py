@@ -12,7 +12,12 @@ from sim2real.algo.normalizer import RunningMeanStd
 
 
 class NormalizedActor(nn.Module):
-    """Wraps normalizer + actor_mean + tanh into one exportable module."""
+    """Wraps normalizer + actor mean + same action bounds as training.
+
+    Matches deterministic inference: Gaussian mean from the actor MLP (no tanh
+    squashing), then clamp to [-1, 1] like ``BipedalEnv.step``. Training never
+    applied tanh to the policy mean; tanh here would skew the deployed policy.
+    """
 
     def __init__(self, actor_mean: nn.Module, obs_mean: torch.Tensor, obs_std: torch.Tensor):
         super().__init__()
@@ -23,7 +28,7 @@ class NormalizedActor(nn.Module):
     def forward(self, obs: torch.Tensor) -> torch.Tensor:
         normalized = (obs - self.obs_mean) / self.obs_std
         normalized = torch.clamp(normalized, -10.0, 10.0)
-        return torch.tanh(self.actor_mean(normalized))
+        return torch.clamp(self.actor_mean(normalized), -1.0, 1.0)
 
 
 def export_to_onnx(
